@@ -31,13 +31,12 @@
                         </div>
                         <div class="form-group">
                             <label for="question-body">Postavite vase pitanje</label>
-                            <textarea name="body" id="question-body" rows="10" class="form-control {{ $errors->has('body') ? 'is-invalid' : '' }}">{{ $question->title }}</textarea>
-
-                            @if ($errors->has('body'))
-                                <div class="invalid-feedback">
-                                    <strong>{{ $errors->first('body') }}</strong>
-                                </div>
-                            @endif
+                            <textarea name="body" id="question-body" rows="10" class="form-control {{ $errors->has('body') ? 'is-invalid' : '' }}">{{ $question->body }}</textarea>
+                                @if ($errors->has('body'))
+                                    <div class="invalid-feedback">
+                                        <strong>{{ $errors->first('body') }}</strong>
+                                    </div>
+                                @endif
 
                         </div>
                         <div class="form-group">

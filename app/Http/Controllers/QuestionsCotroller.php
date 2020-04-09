@@ -89,6 +89,8 @@ class QuestionsCotroller extends Controller
      */
     public function destroy(Question $question)
     {
-        //
+        $question->delete();
+
+        return redirect()->route('questions.index')->with('success', "Tvoje pitanje je uspesno obrisano");
     }
 }
