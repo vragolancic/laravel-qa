@@ -23,3 +23,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('questions', 'QuestionsCotroller')->except('show');
 Route::get ('/questions/{slug}', 'QuestionsCotroller@show')->name('questions.show');
+
+//Route::post ('/questions/{questions}/answers', 'AnswersController@store')->name('answers.store');
+Route::resource('questions.answers', 'AnswersController');
