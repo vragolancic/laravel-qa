@@ -17,9 +17,24 @@
                                 <a title="Ovo Odgovor je nekorisno" class="vote-down off">
                                     <i class="fa fa-caret-down fa-3x"></i>
                                 </a>
-                                <a title="Oznaci odgovor kao najbolji" class="{{$answer->status}} mt-2">
-                                    <i class="fa fa-check fa-2x"></i>
-                                </a>
+                                @can('accept-answer', $answer)
+                                    <a title="Oznaci odgovor kao najbolji" 
+                                        class="{{$answer->status}} mt-2"
+                                        onclick="event.preventDefault(); document.getElementById('accept-answer-{{ $answer->id }}').submit();"
+                                        >
+                                        <i class="fa fa-check fa-2x"></i>
+                                    </a>
+                                    <form action="{{  route('answers.accept', $answer->id)  }}" style="display: none;" id="accept-answer-{{ $answer->id }}" method="post">
+                                        @csrf
+                                    </form>
+                                @else
+                                    @if ($answer->is_best)
+                                        <a title="Vlasnik pitanja je prihvato ovaj osgovor kao najbolji" 
+                                            class="{{$answer->status}} mt-2">
+                                            <i class="fa fa-check fa-2x"></i>
+                                        </a>
+                                    @endif
+                                @endcan
                             </div>
                             <div class="media-body">
                                 {!! $answer->body_html !!}

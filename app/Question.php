@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Answer;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
@@ -48,5 +49,11 @@ class Question extends Model
     public function answers()
     {
         return $this->hasMany(Answer::class);
+    }
+
+    public function acceptBestAnswer(Answer $answer)
+    {
+        $this->best_answer_id = $answer->id;
+        $this->save();
     }
 }
