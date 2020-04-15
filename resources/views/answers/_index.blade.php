@@ -10,13 +10,30 @@
                  @foreach ($answers as $answer)
                      <div class="media">
                             <div class="d-flex flex-column vote-controls">
-                                <a title="Ovo Odgovor je korisno" class="vote-up">
+                                <a title="Ovo pitanje je korisno" 
+                                class="vote-up {{ Auth::guest() ? 'off' : ''}}"
+                                onclick="event.preventDefault(); document.getElementById('up-vote-answer-{{ $answer->id }}').submit();"
+                                >
                                     <i class="fa fa-caret-up fa-3x"></i>
                                 </a>
-                                <span class="votes-count" >1230</span>
-                                <a title="Ovo Odgovor je nekorisno" class="vote-down off">
+
+                                <form action="/answers/{{$answer->id}}/vote" style="display: none;" id="up-vote-answer-{{ $answer->id }}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="vote" value="1">
+                                </form>
+
+                                <span class="votes-count" >{{ $answer->votes_count }}</span>
+
+                                <a title="Ovo pitanje je nekorisno" 
+                                    class="vote-down {{ Auth::guest() ? 'off' : ''}}"
+                                    onclick="event.preventDefault(); document.getElementById('down-vote-answer-{{ $answer->id }}').submit();"
+                                    >
                                     <i class="fa fa-caret-down fa-3x"></i>
                                 </a>
+                                <form action="/answers/{{$answer->id}}/vote" style="display: none;" id="down-vote-answer-{{ $answer->id }}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="vote" value="-1">
+                                </form>
                                 @can('accept-answer', $answer)
                                     <a title="Oznaci odgovor kao najbolji" 
                                         class="{{$answer->status}} mt-2"

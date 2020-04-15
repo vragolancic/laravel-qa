@@ -75,16 +75,31 @@ class User extends Authenticatable
     {
 
         $voteQuestions = $this->voteQuestions();
-        if ($voteQuestions->where('votable_id', $question->id)->exists()) {
-            $voteQuestions->updateExistingPivot($question, ['vote' => $vote]);
+        $this->_vote($voteQuestions, $question, $vote);
+
+    }
+
+
+    public function voteAnswer(Answer $answer, $vote)
+    {
+
+        $voteAnswers = $this->voteAnswers();
+        $this->_vote($voteAnswers, $answer, $vote);
+
+    }
+
+    private function _vote($relationship, $model, $vote)
+    {
+        if ($relationship->where('votable_id', $model->id)->exists()) {
+            $relationship->updateExistingPivot($model, ['vote' => $vote]);
         } else {
-            $voteQuestions->attach($question, ['vote' => $vote]);
+            $relationship->attach($model, ['vote' => $vote]);
         }
 
-        $question->load('votes');
-        $downVotes = $question->downVotes()->sum('vote');
-        $upVotes =  $question->upVotes()->sum('vote');
-        $question->votes_count = $upVotes + $downVotes;
-        $question->save();
+        $model->load('votes');
+        $downVotes = $model->downVotes()->sum('vote');
+        $upVotes =  $model->upVotes()->sum('vote');
+        $model->votes_count = $upVotes + $downVotes;
+        $model->save();
     }
 }
