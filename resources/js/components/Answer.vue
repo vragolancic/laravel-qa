@@ -24,7 +24,7 @@ export default {
             this.editing = false;
         },
         update (){
-            axios.patch(`/questions/${this.questionId}/answers/${this.id}`,{
+            axios.patch( this.endpoint ,{
                 body: this.body
             })
             .then(res => {
@@ -36,13 +36,30 @@ export default {
                 console.log(err.response.data.message);
                 
             });
+        },
+        destroy () {
+            if (confirm('da li ste sigurni')) {
+                axios.delete( this.endpoint)
+                .then(res => {
+                    $(this.$el).fadeOut(500, () => {
+                        alert(res.data.message);
+                    })
+                }).catch(err =>{
+                    console.log(err.response.data.message);
+                    
+                });
+            }
         }
     },
 
     computed: {
         isInvalid () {
             return this.body.length < 10;
+        },
+        endpoint () {
+            return `/questions/${this.questionId}/answers/${this.id}`;
         }
+
     }
 }
 </script>
