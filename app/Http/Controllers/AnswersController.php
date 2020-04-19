@@ -84,6 +84,13 @@ class AnswersController extends Controller
             'body' => 'required',
         ]));
 
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Odgovor je uspesno azuriran',
+                'body_html' => $answer->body_html
+            ]);
+        }
+
         return redirect()->route('questions.show', $question->slug)->with('success', 'Odgovor je uspesno azuriran');
     }
 
