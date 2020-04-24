@@ -14,7 +14,7 @@
         <div class="d-flex align-items-center">
             <h3 class="mt-0"><a href="{{ $question->url }}">{{ $question->title }}</a></h3>
             <div class="ml-auto">
-                @can('update-question', $question)
+                @can('update', $question)
                     <a href="{{ route('questions.edit', $question->id) }}" class="btn btn-outline-info btn-sm">Edit</a>  
                 @endcan
                 
@@ -23,7 +23,7 @@
                 @csrf
                 @method("DELETE")
                 <div class="ml-2">
-                    @can('delete-question', $question)
+                    @can('delete', $question)
                         <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Dali ste sigurni')">Delete</button> 
                     @endcan
                 </div>

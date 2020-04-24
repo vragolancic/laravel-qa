@@ -8,14 +8,18 @@ use Illuminate\Http\Request;
 
 class AnswersController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except('index');
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Question $question)
     {
-        //
+        return $question->answers()->with('user')->simplePaginate(3);
     }
 
     /**
@@ -40,7 +44,15 @@ class AnswersController extends Controller
             'body' => 'required'
         ]);
 
-        $question->answers()->create(['body' => $request->body, 'user_id' => \Auth::id()]);
+        $answer = $question->answers()->create(['body' => $request->body, 'user_id' => \Auth::id()]);
+
+        if ($request->expectsJson()) 
+        {
+            return response()->json([
+                'message' => 'uspesno ste napravili odgovor',
+                'answer' => $answer
+            ]);
+        }
 
         return back()->with('success', "Vas odgovor je uspesno dodat");
     }
@@ -64,7 +76,7 @@ class AnswersController extends Controller
      */
     public function edit(Question $question, Answer $answer)
     {
-        $this->authorize('update-answer', $answer);
+        $this->authorize('update', $answer);
 
         return view('answers.edit', compact('question', 'answer'));
     }
@@ -78,7 +90,7 @@ class AnswersController extends Controller
      */
     public function update(Request $request, Question $question, Answer $answer)
     {
-        $this->authorize('update-answer', $answer);
+        $this->authorize('update', $answer);
 
         $answer->update($request->validate([
             'body' => 'required',
@@ -102,7 +114,7 @@ class AnswersController extends Controller
      */
     public function destroy(Request $request, Question $question, Answer $answer)
     {
-        $this->authorize('delete-answer', $answer);
+        $this->authorize('delete', $answer);
         
         $answer->delete();
 

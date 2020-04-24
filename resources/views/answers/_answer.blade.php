@@ -2,9 +2,8 @@
     <div class="media post">
         <div class="d-flex flex-column vote-controls">
             
-            @include ('shared._vote', [
-                'model' => $answer
-            ])
+
+        <vote :model= "{{ $answer }}" name="answer"></vote>         
             
         </div>
         <div class="media-body">
@@ -20,11 +19,11 @@
                 <div class="row">
                     <div class="col-4">
                         <div class="ml-auto">
-                                @can('update-answer', $answer)
+                                @can('update', $answer)
                                     <a @click.prevent="edit" class="btn btn-outline-info btn-sm">Edit</a>  
                                 @endcan
                                 
-                            @can('delete-answer', $answer)
+                            @can('delete', $answer)
                             <button @click.prevent = "destroy" class="btn btn-outline-danger btn-sm">Delete</button> 
                             
                             @endcan
@@ -35,7 +34,7 @@
                     </div>
                     <div class="col-4">
                     
-                            <user-info :model="{{ $question }}" label='answerd'></user-info>
+                            <user-info :model="{{ $answer }}" label='answerd'></user-info>
                         
                     </div>
                 </div>

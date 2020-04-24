@@ -14,7 +14,7 @@ class Question extends Model
 
     protected $fillable = ['title', 'body'];
 
-    protected $appends = ['url','created_date'];
+    protected $appends = ['url','created_date','is_favorited','favorites_count','body_html'];
 
     public function user(){
         return $this->belongsTo(User::class);
